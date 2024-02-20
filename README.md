@@ -6,4 +6,4 @@
 
 Katherine Losada
 Email: klosada@bu.edu
-Phone number: (603)707-6791
+Phone number: (603) 707-6791
