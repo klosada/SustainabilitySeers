@@ -1,6 +1,10 @@
 # SustainabilitySeers
 
-## CONTACT INFO 
+## Contact information
+
+### Dongchen Zhang
+#### Phone Number: 617-320-9561
+#### Email: zhangdc@bu.edu
 
 Breanna van Loenen: bvanloen@bu.edu; 3474176834
 
