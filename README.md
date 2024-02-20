@@ -1,5 +1,9 @@
 # SustainabilitySeers
 
+## CONTACT INFO 
+
+Breanna van Loenen: bvanloen@bu.edu; 3474176834
+
 #Tessa Keeney
 #Email: tkeeney@bu.edu 
 #Cell: 360-854-8164
