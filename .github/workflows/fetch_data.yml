@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  run_r_script:
+  run_modis_script:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
