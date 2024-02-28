@@ -38,7 +38,7 @@ jobs:
           new_end_date=$(date -d "${end_date} +7 days" +%Y-%m-%d)
 
           # Fetch data for the new period
-          Rscript your_script.R 40.3 -105.5 GPP "${new_start_date}" "${new_end_date}"
+          Rscript MODIS_download.R 40.3 -105.5 GPP "${new_start_date}" "${new_end_date}"
 
       - name: Store current start and end dates as artifacts
         if: always()
