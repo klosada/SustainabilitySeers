@@ -15,7 +15,7 @@
 ##' \dontrun{
 ##' dat <- NEON_download_CO2_concentration(lat = 40.3, lon = -105.5, start_date = "2020-01-01", end_date = "2020-12-31", store_dir = "~")
 ##' }
-NEON_download_CO2_concentration <- function(lon, lat, startdate, enddate, store_dir){
+NEON_download_CO2_concentration <- function(lon, lat, start_date, end_date, store_dir){
   packages <- c("neonstore", "swfscMisc", "neonUtilities", "purrr", "dplyr")
   packages.exist <- lapply(packages, require, character.only = TRUE) %>% unlist
   #install packages.
