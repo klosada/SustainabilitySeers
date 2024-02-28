@@ -2,7 +2,8 @@ name: Daily MODIS Data Download
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *" # This schedule runs the workflow daily at midnight UTC
+  workflow_dispatch:
 
 jobs:
   run_r_script:
