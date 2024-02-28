@@ -20,9 +20,12 @@ jobs:
           r-version: "4.x"
 
       - name: Install MODISTools package
-        run: |
-          install.packages("MODISTools")
-          install.packages("dplyr")
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache-version: 2
+          extra-packages: |
+            any::modistools
+            any::dplyr
 
       - name: Retrieve previous start and end dates
         id: get_dates
