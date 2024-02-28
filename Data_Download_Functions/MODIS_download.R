@@ -54,7 +54,7 @@ MODIS_download <- function(lat, lon, var, start_date, end_date){
                      "16"="Barren",
                      "17"="Water Bodies")
   }
-  #extract data
+
   dat <- MODISTools::mt_subset(product = product,
                                lat = lat,
                                lon = lon,
@@ -68,3 +68,21 @@ MODIS_download <- function(lat, lon, var, start_date, end_date){
     return(list(var = var, data = dat$value*scale, date = dat$calendar_date))
   }
 }
+
+# To retrieve command line arguments
+args <- commandArgs(trailingOnly = TRUE)
+
+if (length(args) != 5) {
+  stop("Usage: Rscript script.R latitude longitude variable start_date end_date")
+}
+
+lat <- as.numeric(args[1])
+lon <- as.numeric(args[2])
+var <- args[3]
+start_date <- args[4]
+end_date <- args[5]
+
+result <- MODIS_download(lat, lon, var, start_date, end_date)
+
+output_file <- paste("MODIS_data_", Sys.Date(), ".csv", sep="")
+write.table(result, file = output_file, row.names = FALSE, col.names=c("variable", "value", "date"))
