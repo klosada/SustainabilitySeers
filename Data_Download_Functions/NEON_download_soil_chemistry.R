@@ -16,8 +16,13 @@
 ##' dat <- NEON_download_soil_chemistry(lat = 40.3, lon = -105.5, start_date = "2020-01-01", end_date = "2020-12-31", store_dir = "~")
 ##' }
 NEON_download_soil_chemistry <- function(lon, lat, start_date, end_date, store_dir){
+  #check if folder exists.
+  if (!file.exists(store_dir)) {
+    dir.create(store_dir)
+  }
+  #check packages.
   packages <- c("neonstore", "swfscMisc", "neonUtilities", "purrr", "dplyr")
-  packages.exist <- lapply(packages, require, character.only = TRUE) %>% unlist
+  packages.exist <- unlist(lapply(packages, require, character.only = TRUE))
   #install packages.
   for (i in seq_along(packages.exist)) {
     if (!packages.exist[i]) {
@@ -35,16 +40,14 @@ NEON_download_soil_chemistry <- function(lon, lat, start_date, end_date, store_d
   #soil chemistry.
   productID <- "DP1.10086.001"
   table.var <- list(sls_soilCoreCollection = c("soilTemp"),
-                    sls_soilChemistry = c("nitrogenPercent", "organicCPercent"),
                     sls_soilMoisture = c("soilMoisture"),
                     sls_soilpH = c("soilInWaterpH"))
   table.name <- c("sls_soilCoreCollection",
-                  "sls_soilChemistry",
                   "sls_soilMoisture",
                   "sls_soilpH")
   #download data.
   neonstore::neon_download(product = productID, 
-                           dir = storedir, 
+                           dir = store_dir, 
                            table = NA, 
                            site = sitename, 
                            start_date = start_date, 
@@ -52,26 +55,29 @@ NEON_download_soil_chemistry <- function(lon, lat, start_date, end_date, store_d
                            type = "basic",
                            api = "https://data.neonscience.org/api/v0")
   #read outputs from variables of multiple tables.
-  read.output <- table.name %>% 
-    purrr::map(function(table){
-      df <- neonstore::neon_read(table = table,
-                                 product = productID, 
-                                 start_date = start_date, 
-                                 end_date = end_date, 
-                                 dir = store_dir) %>% 
-        dplyr::mutate(collectDate = as.character(as.Date(collectDate))) %>% 
-        dplyr::select(c("collectDate", table.var[[table]]))
-      #calculate daily average.
-      aggregate(.~collectDate, df, mean, na.action = NULL, na.rm = TRUE)
-    }) %>% purrr::set_names(table.name)
-  #merge together
-  total.dates <- read.output %>% 
-    purrr::map(\(x)x$collectDate) %>% 
-    unlist %>% 
-    unique
-  final.outputs <- data.frame(collectDate = total.dates)
-  for (i in seq_along(read.output)) {
-    final.outputs <- dplyr::left_join(final.outputs, read.output[[i]], by = "collectDate")
+  if ("try-error" %in% class(try(read.output <- table.name %>% 
+                                 purrr::map(function(table){
+                                   df <- neonstore::neon_read(table = table,
+                                                              product = productID, 
+                                                              start_date = start_date, 
+                                                              end_date = end_date, 
+                                                              dir = store_dir) %>% 
+                                     dplyr::mutate(collectDate = as.character(as.Date(collectDate))) %>% 
+                                     dplyr::select(c("collectDate", table.var[[table]]))
+                                   #calculate daily average.
+                                   aggregate(.~collectDate, df, mean, na.action = NULL, na.rm = TRUE)
+                                 }) %>% purrr::set_names(table.name)))) {
+    return(NULL)
+  } else {
+    #merge together
+    total.dates <- read.output %>% 
+      purrr::map(\(x)x$collectDate) %>% 
+      unlist %>% 
+      unique
+    final.outputs <- data.frame(collectDate = total.dates)
+    for (i in seq_along(read.output)) {
+      final.outputs <- dplyr::left_join(final.outputs, read.output[[i]], by = "collectDate")
+    }
+    return(final.outputs)
   }
-  return(final.outputs)
 }
