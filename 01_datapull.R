@@ -158,7 +158,7 @@ allPrecipData <- rbind(precip1, updates2x)
 save(updates2x, file=precip.RData)
 
 ## Variable 4: NEON soil chemistry----
-source("~/SustainabilitySeers/Data_Download_Functions/NEON_download_soil_chemistry.R")
+source("/Data_Download_Functions/NEON_download_soil_chemistry.R")
 if (file.exists("soilchemistry.RData")) {
   load("soilchemistry.RData")
   last_update <- max(soilChemistry$collectDate)
@@ -182,7 +182,7 @@ soilChemistry <- rbind(soilChemistry, updates)
 save(soilChemistry,file="soilchemistry.RData")
 
 ## Variable 5: NEON CO2 concentration----
-source("~/SustainabilitySeers/Data_Download_Functions/NEON_download_CO2_concentration.R")
+source("/Data_Download_Functions/NEON_download_CO2_concentration.R")
 if (file.exists("co2_concentration.RData")) {
   load("co2_concentration.RData")
   last_update <- as.Date(max(co2Concentration$timeBgn))
