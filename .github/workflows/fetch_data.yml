@@ -16,7 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: List contents of data directory
+        run: ls
+
       - name: Run
         run: |
           # Fetch data for the new period
-          Rscript /Data_Download_Functions/GEFS_download.R 
+          Rscript ../Data_Download_Functions/GEFS_download.R 
