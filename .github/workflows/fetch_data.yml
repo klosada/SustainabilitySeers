@@ -1,4 +1,4 @@
-name: Daily MODIS Data Download
+name: Daily GEFS Data Download
 
 on:
   schedule:
