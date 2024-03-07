@@ -19,4 +19,4 @@ jobs:
       - name: Run
         run: |
           # Fetch data for the new period
-          Rscript GEFS_download.R 
+          Rscript /Data_Download_Functions/GEFS_download.R 
